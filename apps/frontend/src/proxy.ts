@@ -43,6 +43,20 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(`/auth/login-required`, nextUrl.href));
   }
 
+  // public pages: the landing page and the legal pages are visible to everyone
+  if (['/about', '/terms', '/privacy'].includes(nextUrl.pathname)) {
+    return topResponse;
+  }
+
+  // signed-out visitors of the root see the landing page
+  if (nextUrl.pathname === '/' && !authCookie && !nextUrl.search) {
+    return NextResponse.rewrite(new URL('/about', nextUrl.href), {
+      request: {
+        headers: requestHeaders,
+      },
+    });
+  }
+
   if (
     nextUrl.pathname.startsWith('/uploads/') ||
     nextUrl.pathname.startsWith('/p/') ||

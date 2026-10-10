@@ -1,7 +1,11 @@
 services:
   postiz:
-    image: ghcr.io/gitroomhq/postiz-app:latest
-    container_name: postiz
+    image: klipo:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: dist
+    container_name: klipo
     restart: always
     environment:
       # === Required Settings
@@ -15,6 +19,10 @@ services:
       TEMPORAL_ADDRESS: 'temporal:7233'
       IS_GENERAL: 'true'
       DISABLE_REGISTRATION: 'false'
+      # Klipo only offers TikTok: every other provider is hidden from the add-channel screen
+      HIDDEN_PROVIDERS: 'bluesky,devto,discord,dribbble,facebook,gmb,hashnode,instagram,instagram-standalone,kick,lemmy,linkedin,linkedin-page,listmonk,mastodon,medium,mewe,moltbook,nostr,pinterest,reddit,skool,slack,telegram,threads,tiktok-business,tumblr,twitch,vk,whop,wordpress,wrapcast,x,youtube'
+      # Shown in the footer of the public pages (optional)
+      # CONTACT_EMAIL: 'you@example.com'
 
       # === Storage Settings
       STORAGE_PROVIDER: 'local'
