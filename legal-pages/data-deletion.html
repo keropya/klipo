@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Deletion Instructions - Klipo</title>
+<meta name="description" content="How to remove your data from Klipo.">
+<style>
+:root{
+  --paper:#FBFBFD; --ink:#1B1E2B; --muted:#5A6075; --rule:#E2E4EE; --accent:#3B3FD8; --tint:#EEF0FF;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#14151F; --ink:#E9EAF2; --muted:#9BA0B5; --rule:#2A2C3D; --accent:#9AA0FF; --tint:#1D1F33; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:Charter,"Iowan Old Style",Georgia,"Times New Roman",serif;
+  font-size:18px;line-height:1.7}
+.wrap{max-width:44rem;margin:0 auto;padding:3rem 1.25rem 5rem}
+header.site{display:flex;align-items:center;gap:.75rem;margin-bottom:2.5rem;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:600;font-size:1rem}
+header.site a{color:var(--ink);text-decoration:none}
+header.site svg{width:2rem;height:2rem;flex:none}
+h1,h2{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25;letter-spacing:-.01em}
+h1{font-size:2.1rem;margin:0 0 .35rem}
+h2{font-size:1.2rem;margin:2.4rem 0 .5rem;padding-top:1.4rem;border-top:1px solid var(--rule)}
+p,li{max-width:68ch}
+.meta{color:var(--muted);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.9rem;margin:0 0 2rem}
+a{color:var(--accent);text-underline-offset:.15em;overflow-wrap:anywhere}
+a:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
+ul{padding-left:1.25rem}
+li{margin:.3rem 0}
+.note{background:var(--tint);border-left:4px solid var(--accent);padding:.9rem 1.1rem;border-radius:0 6px 6px 0;font-size:1rem}
+footer{margin-top:3.5rem;padding-top:1.4rem;border-top:1px solid var(--rule);color:var(--muted);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.9rem;display:flex;gap:1.25rem;flex-wrap:wrap}
+h3{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1.02rem;line-height:1.3;margin:1.6rem 0 .35rem}
+code{font-size:.85em;word-break:break-word}
+.toc{columns:2 14rem;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.95rem;padding-left:1.25rem}
+@media (max-width:520px){ body{font-size:17px} h1{font-size:1.75rem} }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="site"><svg viewBox="0 0 1024 1024" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#262A8C"/><stop offset="1" stop-color="#6A3FD6"/></linearGradient></defs><rect width="1024" height="1024" rx="200" fill="url(#g)"/><rect x="212" y="252" width="600" height="560" rx="72" fill="#fff"/><path d="M212 324a72 72 0 0 1 72-72h456a72 72 0 0 1 72 72v62H212z" fill="#E4E7FF"/><path d="M452 524v160l144-80z" fill="#3B3FD8" stroke="#3B3FD8" stroke-width="34" stroke-linejoin="round"/><circle cx="790" cy="790" r="132" fill="#FFB830" stroke="#fff" stroke-width="22"/><path d="M790 722v72l52 30" fill="none" stroke="#1E1B4B" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg><a href="/">Klipo</a></header>
+<main>
+<h1>Data Deletion Instructions</h1>
+<p class="meta">Last updated: October 11, 2026</p>
+
+<p class="note">If you connected your TikTok account to Klipo, or believe Klipo holds data about you, you can remove that data in any of the ways below.</p>
+
+<h2>1. Remove the connection in Klipo</h2>
+<p>Sign in to Klipo, open your TikTok account in the left-hand list of connected channels, open its menu, and choose to disconnect or delete it. This deletes the stored access tokens and profile information for that account and cancels any posts still scheduled for it.</p>
+
+<h2>2. Revoke access from TikTok</h2>
+<p>You can also revoke access directly from TikTok, even without signing in to Klipo: open TikTok, go to Settings and privacy, Security and permissions, Manage app permissions, select Klipo, and choose Remove. Once access is revoked, the tool can no longer read from or post to your account, and we delete the stored tokens and profile data when the connection is next checked, or on request.</p>
+
+<h2>3. Ask us to delete your data</h2>
+<p>Email <a href="mailto:keropya1@gmail.com">keropya1@gmail.com</a> with the subject "Data deletion request", and tell us the TikTok account name and the email address of your Klipo login. We will delete all tokens, profile information, scheduled content, and media related to that account within 7 days and confirm by email. Copies in routine server logs and backups are removed on their normal rotation within 30 days.</p>
+
+<h2>4. What deletion covers</h2>
+<ul>
+<li>Access and refresh tokens and other credentials for the account.</li>
+<li>Profile information received from TikTok (name, username, picture, IDs).</li>
+<li>Scheduled and draft posts and the uploaded media attached to them.</li>
+<li>Statistics fetched from TikTok.</li>
+<li>If you ask us to delete your Klipo login, the email address and password hash of that login.</li>
+</ul>
+<p>Deleting data here does not delete videos that have already been published on TikTok. To remove those, delete them in TikTok itself.</p>
+
+<h2>5. Contact</h2>
+<p><a href="mailto:keropya1@gmail.com">keropya1@gmail.com</a></p>
+</main>
+<footer><a href="/">Home</a><a href="/terms/tiktok">Terms of Service</a><a href="/privacy/tiktok">Privacy Policy</a><a href="/data-deletion">Data Deletion</a></footer>
+</div>
+</body>
+</html>
