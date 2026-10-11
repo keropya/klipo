@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-      target: dist
     container_name: klipo
     restart: always
     environment:
