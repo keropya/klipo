@@ -98,6 +98,10 @@ export class MediaService {
     return this._mediaRepository.deleteMedia(org, id);
   }
 
+  async deleteManyMedia(org: string, ids: string[]) {
+    return this._mediaRepository.deleteManyMedia(org, ids);
+  }
+
   getMediaById(id: string) {
     return this._mediaRepository.getMediaById(id);
   }
