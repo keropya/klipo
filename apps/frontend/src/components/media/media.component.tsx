@@ -281,9 +281,6 @@ export const MediaBox: FC<{
 
   const addRemoveSelected = useCallback(
     (media: any) => () => {
-      if (standalone) {
-        return;
-      }
       const exists = selected.find((p: any) => p.id === media.id);
       if (exists) {
         setSelected(selected.filter((f: any) => f.id !== media.id));
@@ -421,7 +418,16 @@ export const MediaBox: FC<{
     [mutate]
   );
 
-  // phones have no hover, so the selected media are deleted together
+  const selectAll = useCallback(() => {
+    setSelected((prevSelected) => [
+      ...prevSelected,
+      ...(data?.results || []).filter(
+        (media: any) => !prevSelected.find((p: any) => p.id === media.id)
+      ),
+    ]);
+  }, [data]);
+
+  // the picker deletes the selected media on phones, the media page on every screen
   const deleteSelected = useCallback(async () => {
     if (
       !(await deleteDialog(
@@ -436,13 +442,12 @@ export const MediaBox: FC<{
     const toDelete = selected;
     setSelected([]);
     try {
-      await Promise.all(
-        toDelete.map((media: any) =>
-          fetch(`/media/${media.id}`, {
-            method: 'DELETE',
-          })
-        )
-      );
+      await fetch('/media', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          ids: toDelete.map((media: any) => media.id),
+        }),
+      });
     } finally {
       const result = await mutate();
       // deleting a whole last page leaves nothing to show there
@@ -511,7 +516,34 @@ export const MediaBox: FC<{
               )}
             </div>
           )}
-          {!!selected.length && (
+          {standalone && !!data?.results?.length && (
+            <div className="flex gap-[8px] mobile:basis-full mobile:child:flex-1">
+              <button
+                onClick={selectAll}
+                className="cursor-pointer bg-btnSimple flex h-[44px] px-[18px] justify-center items-center rounded-[8px]"
+              >
+                {t('select_all', 'Select all')}
+              </button>
+              {!!selected.length && (
+                <>
+                  <button
+                    onClick={() => setSelected([])}
+                    className="cursor-pointer bg-btnSimple flex h-[44px] px-[18px] justify-center items-center rounded-[8px]"
+                  >
+                    {t('clear', 'Clear')}
+                  </button>
+                  <button
+                    onClick={deleteSelected}
+                    className="cursor-pointer bg-btnSimple flex gap-[8px] h-[44px] px-[18px] justify-center items-center rounded-[8px] text-[#FF3F3F] font-[600]"
+                  >
+                    <TrashIcon size={18} />
+                    {t('delete_selected', 'Delete Selected')} ({selected.length})
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+          {!standalone && !!selected.length && (
             <div
               onClick={deleteSelected}
               className="hidden mobile:flex basis-full justify-center items-center gap-[8px] h-[24px] text-[15px] font-[600] text-[#FF3F3F] cursor-pointer select-none"
@@ -620,8 +652,7 @@ export const MediaBox: FC<{
               .map((media: any) => (
                 <div
                   className={clsx(
-                    'group px-[3px] py-[3px] mobile:p-[6px] float-left rounded-[6px] w8-max mobile:!w-1/2 mobile:!max-w-[50%] aspect-square',
-                    !standalone && 'cursor-pointer'
+                    'group px-[3px] py-[3px] mobile:p-[6px] float-left rounded-[6px] w8-max mobile:!w-1/2 mobile:!max-w-[50%] aspect-square cursor-pointer'
                   )}
                   key={media.id}
                 >

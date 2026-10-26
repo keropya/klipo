@@ -96,6 +96,21 @@ export class MediaRepository {
     });
   }
 
+  deleteManyMedia(org: string, ids: string[]) {
+    return this._media.model.media.updateMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        organizationId: org,
+        deletedAt: null,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  }
+
   saveMediaInformation(org: string, data: SaveMediaInformationDto) {
     return this._media.model.media.update({
       where: {
