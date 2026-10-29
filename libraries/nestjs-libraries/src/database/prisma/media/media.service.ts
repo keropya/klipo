@@ -95,11 +95,59 @@ export class MediaService {
   ) {}
 
   async deleteMedia(org: string, id: string) {
-    return this._mediaRepository.deleteMedia(org, id);
+    const files = await this.collectFilesToPurge(org, [id]);
+    const deleted = await this._mediaRepository.deleteMedia(org, id);
+    await this.purgeFiles(files);
+    return deleted;
   }
 
   async deleteManyMedia(org: string, ids: string[]) {
-    return this._mediaRepository.deleteManyMedia(org, ids);
+    const files = await this.collectFilesToPurge(org, ids);
+    const deleted = await this._mediaRepository.deleteManyMedia(org, ids);
+    await this.purgeFiles(files);
+    return deleted;
+  }
+
+  // Only files in our own bucket that nothing else still points at are removed
+  private async collectFilesToPurge(org: string, ids: string[]) {
+    const bucketUrl = process.env.CLOUDFLARE_BUCKET_URL;
+    if (process.env.STORAGE_PROVIDER !== 'cloudflare' || !bucketUrl) {
+      return [] as string[];
+    }
+
+    const medias = await this._mediaRepository.getMediaForPurge(org, ids);
+    const files: string[] = [];
+    for (const media of medias) {
+      const { agencies, userPicture, oauthApps } = media._count;
+      if (agencies + userPicture + oauthApps > 0) {
+        continue;
+      }
+
+      if (
+        !media.path?.startsWith(bucketUrl) ||
+        (await this._mediaRepository.countPendingPostsUsing(org, media.path)) >
+          0
+      ) {
+        continue;
+      }
+
+      files.push(media.path);
+      if (media.thumbnail?.startsWith(bucketUrl)) {
+        files.push(media.thumbnail);
+      }
+    }
+
+    return files;
+  }
+
+  private async purgeFiles(files: string[]) {
+    for (const file of files) {
+      try {
+        await this.storage.removeFile(file);
+      } catch (err) {
+        console.error(`Failed to remove ${file} from storage`, err);
+      }
+    }
   }
 
   getMediaById(id: string) {

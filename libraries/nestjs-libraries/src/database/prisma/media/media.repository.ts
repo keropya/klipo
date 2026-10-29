@@ -4,7 +4,10 @@ import { SaveMediaInformationDto } from '@gitroom/nestjs-libraries/dtos/media/sa
 
 @Injectable()
 export class MediaRepository {
-  constructor(private _media: PrismaRepository<'media'>) {}
+  constructor(
+    private _media: PrismaRepository<'media'>,
+    private _post: PrismaRepository<'post'>
+  ) {}
 
   saveFile(org: string, fileName: string, filePath: string, originalName?: string) {
     return this._media.model.media.create({
@@ -80,6 +83,46 @@ export class MediaRepository {
     return this._media.model.media.findUnique({
       where: {
         id,
+      },
+    });
+  }
+
+  getMediaForPurge(org: string, ids: string[]) {
+    return this._media.model.media.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        organizationId: org,
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        path: true,
+        thumbnail: true,
+        _count: {
+          select: {
+            agencies: true,
+            userPicture: true,
+            oauthApps: true,
+          },
+        },
+      },
+    });
+  }
+
+  // Unpublished posts still need the file at publish time
+  countPendingPostsUsing(org: string, path: string) {
+    return this._post.model.post.count({
+      where: {
+        organizationId: org,
+        deletedAt: null,
+        state: {
+          in: ['QUEUE', 'DRAFT'],
+        },
+        image: {
+          contains: path,
+        },
       },
     });
   }
